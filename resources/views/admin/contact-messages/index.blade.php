@@ -8,7 +8,7 @@
         <h3 class="text-lg font-semibold">All Contact Messages</h3>
     </div>
     <div class="p-6">
-        @if(isset($messages) && $messages->count() > 0)
+        @if(isset($contactMessages) && $contactMessages->count() > 0)
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-100">
@@ -37,7 +37,7 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($messages as $message)
+                        @foreach($contactMessages as $message)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-medium">{{ $message->name }}</div>
@@ -92,7 +92,7 @@
                 </table>
             </div>
             <div class="mt-4">
-                {{ $messages->links() }} <!-- Pagination links -->
+                {{ $contactMessages->links() }} <!-- Pagination links -->
             </div>
         @else
             <div class="text-center py-8">

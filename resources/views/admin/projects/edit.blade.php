@@ -56,6 +56,48 @@
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <!-- Demo Link -->
+                <div>
+                    <label for="demo_url" class="block text-sm font-medium">Demo Link</label>
+                    <input type="url" 
+                           id="demo_url" 
+                           name="demo_url" 
+                           value="{{ old('demo_url', $project->demo_url) }}" 
+                           placeholder="https://www.example.com"
+                           class="mt-1 block w-full admin-input">
+                    @error('demo_url')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                
+                <!-- GitHub Link -->
+                <div>
+                    <label for="github_url" class="block text-sm font-medium">GitHub Link</label>
+                    <input type="url" 
+                           id="github_url" 
+                           name="github_url" 
+                           value="{{ old('github_url', $project->github_url) }}" 
+                           placeholder="https://github.com/user/repo"
+                           class="mt-1 block w-full admin-input">
+                    @error('github_url')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <!-- Technologies -->
+            <div class="mt-6">
+                <label for="technologies" class="block text-sm font-medium">Technologies (comma-separated)</label>
+                <input type="text" 
+                       id="technologies" 
+                       name="technologies" 
+                       value="{{ old('technologies', implode(', ', $project->technologies ?? [])) }}" 
+                       placeholder="e.g., Laravel, Vue.js, Tailwind CSS"
+                       class="mt-1 block w-full admin-input">
+                @error('technologies')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Description -->
@@ -91,6 +133,28 @@
                 @error('image')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
+            </div>
+            
+            <!-- Is Featured & Is Active Checkboxes -->
+            <div class="mt-6 flex items-center space-x-6">
+                <div>
+                    <input type="checkbox" 
+                           id="is_featured" 
+                           name="is_featured" 
+                           value="1" 
+                           {{ old('is_featured', $project->is_featured) ? 'checked' : '' }}
+                           class="admin-checkbox">
+                    <label for="is_featured" class="ml-2 text-sm font-medium">Is Featured</label>
+                </div>
+                <div>
+                    <input type="checkbox" 
+                           id="is_active" 
+                           name="is_active" 
+                           value="1" 
+                           {{ old('is_active', $project->is_active) ? 'checked' : '' }}
+                           class="admin-checkbox">
+                    <label for="is_active" class="ml-2 text-sm font-medium">Is Active</label>
+                </div>
             </div>
             
             <!-- Submit Buttons -->

@@ -1,36 +1,33 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Skills Management')
+@section('page-title', 'Projects Management')
 
 @section('content')
 <div class="admin-card">
     <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-semibold">Skills</h3>
-        <a href="{{ route('admin.skills.create') }}" 
+        <h3 class="text-lg font-semibold">Projects</h3>
+        <a href="{{ route('admin.projects.create') }}" 
            class="btn-primary">
-            <i class="fas fa-plus mr-2"></i>Add Skill
+            <i class="fas fa-plus mr-2"></i>Add Project
         </a>
     </div>
     <div class="p-6">
-        @if($skills->count() > 0)
+        @if(isset($projects) && $projects->count() > 0)
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-description uppercase tracking-wider">
-                                Icon
+                                Image
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-description uppercase tracking-wider">
-                                Name
+                                Title
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-description uppercase tracking-wider">
-                                Icon Class
+                                Category
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-description uppercase tracking-wider">
-                                Order
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-description uppercase tracking-wider">
-                                Status
+                                Link
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-description uppercase tracking-wider">
                                 Actions
@@ -38,34 +35,43 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($skills as $skill)
+                        @foreach($projects as $project)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <i class="{{ $skill->icon_class }} text-xl text-blue-600"></i>
+                                    @if($project->image)
+                                        <img src="{{ asset('storage/' . $project->image) }}" 
+                                             alt="{{ $project->title }}" 
+                                             class="w-16 h-16 object-cover rounded-md admin-card">
+                                    @else
+                                        <div class="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center admin-card">
+                                            <i class="fas fa-image text-gray-400 text-xl"></i>
+                                        </div>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium">{{ $skill->name }}</div>
+                                    <div class="text-sm font-medium">{{ $project->title }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-description">{{ $skill->icon_class }}</div>
+                                    <div class="text-sm text-description">{{ $project->category }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-description">{{ $skill->order }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $skill->is_active ? 'badge-active' : 'badge-inactive' }}">
-                                        {{ $skill->is_active ? 'Active' : 'Inactive' }}
-                                    </span>
+                                    @if($project->link)
+                                        <a href="{{ $project->link }}" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                            <i class="fas fa-external-link-alt"></i> View
+                                        </a>
+                                    @else
+                                        <span class="text-description">N/A</span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <a href="{{ route('admin.skills.edit', $skill) }}" 
+                                    <a href="{{ route('admin.projects.edit', $project) }}" 
                                        class="text-blue-600 hover:text-blue-800 mr-3">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
                                     <form method="POST" 
-                                          action="{{ route('admin.skills.destroy', $skill) }}" 
+                                          action="{{ route('admin.projects.destroy', $project) }}" 
                                           class="inline"
-                                          onsubmit="return confirm('Are you sure you want to delete this skill?')">
+                                          onsubmit="return confirm('Are you sure you want to delete this project?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:text-red-800">
@@ -80,11 +86,11 @@
             </div>
         @else
             <div class="text-center py-8">
-                <i class="fas fa-code text-gray-400 text-4xl mb-4"></i>
-                <p class="text-description mb-4">No skills added yet.</p>
-                <a href="{{ route('admin.skills.create') }}" 
+                <i class="fas fa-folder text-gray-400 text-4xl mb-4"></i>
+                <p class="text-description mb-4">No projects added yet.</p>
+                <a href="{{ route('admin.projects.create') }}" 
                    class="btn-primary">
-                    Add Your First Skill
+                    Add Your First Project
                 </a>
             </div>
         @endif

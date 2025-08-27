@@ -1,36 +1,30 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Skills Management')
+@section('page-title', 'Education Management')
 
 @section('content')
 <div class="admin-card">
     <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-semibold">Skills</h3>
-        <a href="{{ route('admin.skills.create') }}" 
+        <h3 class="text-lg font-semibold">Education</h3>
+        <a href="{{ route('admin.education.create') }}" 
            class="btn-primary">
-            <i class="fas fa-plus mr-2"></i>Add Skill
+            <i class="fas fa-plus mr-2"></i>Add Education
         </a>
     </div>
     <div class="p-6">
-        @if($skills->count() > 0)
+        @if(isset($education) && $education->count() > 0)
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-description uppercase tracking-wider">
-                                Icon
+                                Degree
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-description uppercase tracking-wider">
-                                Name
+                                Institution
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-description uppercase tracking-wider">
-                                Icon Class
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-description uppercase tracking-wider">
-                                Order
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-description uppercase tracking-wider">
-                                Status
+                                Year
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-description uppercase tracking-wider">
                                 Actions
@@ -38,34 +32,26 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($skills as $skill)
+                        @foreach($education as $edu)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <i class="{{ $skill->icon_class }} text-xl text-blue-600"></i>
+                                    <div class="text-sm font-medium">{{ $edu->degree }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium">{{ $skill->name }}</div>
+                                    <div class="text-sm text-description">{{ $edu->institution }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-description">{{ $skill->icon_class }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-description">{{ $skill->order }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $skill->is_active ? 'badge-active' : 'badge-inactive' }}">
-                                        {{ $skill->is_active ? 'Active' : 'Inactive' }}
-                                    </span>
+                                    <div class="text-sm text-description">{{ $edu->start_year }} - {{ $edu->end_year ?? 'Present' }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <a href="{{ route('admin.skills.edit', $skill) }}" 
+                                    <a href="{{ route('admin.education.edit', $edu) }}" 
                                        class="text-blue-600 hover:text-blue-800 mr-3">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
                                     <form method="POST" 
-                                          action="{{ route('admin.skills.destroy', $skill) }}" 
+                                          action="{{ route('admin.education.destroy', $edu) }}" 
                                           class="inline"
-                                          onsubmit="return confirm('Are you sure you want to delete this skill?')">
+                                          onsubmit="return confirm('Are you sure you want to delete this education entry?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:text-red-800">
@@ -80,11 +66,11 @@
             </div>
         @else
             <div class="text-center py-8">
-                <i class="fas fa-code text-gray-400 text-4xl mb-4"></i>
-                <p class="text-description mb-4">No skills added yet.</p>
-                <a href="{{ route('admin.skills.create') }}" 
+                <i class="fas fa-graduation-cap text-gray-400 text-4xl mb-4"></i>
+                <p class="text-description mb-4">No education entries added yet.</p>
+                <a href="{{ route('admin.education.create') }}" 
                    class="btn-primary">
-                    Add Your First Skill
+                    Add Your First Education Entry
                 </a>
             </div>
         @endif

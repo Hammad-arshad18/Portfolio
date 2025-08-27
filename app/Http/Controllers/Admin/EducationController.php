@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Education;
 
 class EducationController extends Controller
 {
@@ -12,7 +13,8 @@ class EducationController extends Controller
      */
     public function index()
     {
-        //
+        $education = Education::ordered()->get();
+        return view('admin.education.index', compact('education'));
     }
 
     /**
@@ -20,7 +22,7 @@ class EducationController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.education.create');
     }
 
     /**
@@ -28,7 +30,19 @@ class EducationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'degree' => 'required|string|max:255',
+            'institution' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'year' => 'required|integer|min:1900|max:2099',
+            'description' => 'nullable|string',
+            'order' => 'nullable|integer',
+            'is_active' => 'boolean',
+        ]);
+
+        Education::create($validated);
+
+        return redirect()->route('admin.education.index')->with('success', 'Education entry added successfully!');
     }
 
     /**
@@ -42,24 +56,38 @@ class EducationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Education $education)
     {
-        //
+        return view('admin.education.edit', compact('education'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Education $education)
     {
-        //
+        $validated = $request->validate([
+            'degree' => 'required|string|max:255',
+            'institution' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'year' => 'required|integer|min:1900|max:2099',
+            'description' => 'nullable|string',
+            'order' => 'nullable|integer',
+            'is_active' => 'boolean',
+        ]);
+
+        $education->update($validated);
+
+        return redirect()->route('admin.education.index')->with('success', 'Education entry updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Education $education)
     {
-        //
+        $education->delete();
+
+        return redirect()->route('admin.education.index')->with('success', 'Education entry deleted successfully!');
     }
 }

@@ -5,10 +5,10 @@
 @section('content')
 <div class="admin-card">
     <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 class="text-lg font-semibold">Message from {{ $message->name }}</h3>
+        <h3 class="text-lg font-semibold">Message from {{ $contactMessage->name }}</h3>
         <div class="flex space-x-2">
-            @if(!$message->is_read)
-            <form action="{{ route('admin.contact-messages.mark-read', $message) }}" method="POST">
+            @if(!$contactMessage->is_read)
+            <form action="{{ route('admin.contact-messages.mark-read', $contactMessage) }}" method="POST">
                 @csrf
                 @method('PATCH')
                 <button type="submit" class="btn-primary bg-green-600 hover:bg-green-700">
@@ -16,7 +16,7 @@
                 </button>
             </form>
             @endif
-            <form action="{{ route('admin.contact-messages.destroy', $message) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this message?')">
+            <form action="{{ route('admin.contact-messages.destroy', $contactMessage) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this message?')">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn-secondary text-red-600 hover:text-red-800">
@@ -28,28 +28,28 @@
     <div class="p-6 space-y-6">
         <div>
             <h4 class="text-sm font-medium">Sender Name</h4>
-            <p class="text-description">{{ $message->name }}</p>
+            <p class="text-description">{{ $contactMessage->name }}</p>
         </div>
         <div>
             <h4 class="text-sm font-medium">Sender Email</h4>
-            <p class="text-description">{{ $message->email }}</p>
+            <p class="text-description">{{ $contactMessage->email }}</p>
         </div>
         <div>
             <h4 class="text-sm font-medium">Subject</h4>
-            <p class="text-description">{{ $message->subject }}</p>
+            <p class="text-description">{{ $contactMessage->subject }}</p>
         </div>
         <div>
             <h4 class="text-sm font-medium">Message</h4>
-            <p class="text-description whitespace-pre-wrap">{{ $message->message }}</p>
+            <p class="text-description whitespace-pre-wrap">{{ $contactMessage->message }}</p>
         </div>
         <div>
             <h4 class="text-sm font-medium">Received At</h4>
-            <p class="text-description">{{ $message->created_at->format('M d, Y H:i:s') }} ({{ $message->created_at->diffForHumans() }})</p>
+            <p class="text-description">{{ $contactMessage->created_at->format('M d, Y H:i:s') }} ({{ $contactMessage->created_at->diffForHumans() }})</p>
         </div>
         <div>
             <h4 class="text-sm font-medium">Status</h4>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $message->is_read ? 'badge-inactive' : 'badge-active' }}">
-                {{ $message->is_read ? 'Read' : 'Unread' }}
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $contactMessage->is_read ? 'badge-inactive' : 'badge-active' }}">
+                {{ $contactMessage->is_read ? 'Read' : 'Unread' }}
             </span>
         </div>
         

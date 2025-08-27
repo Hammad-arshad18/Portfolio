@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\ContactMessage;
 
 class ContactMessageController extends Controller
 {
@@ -12,7 +13,8 @@ class ContactMessageController extends Controller
      */
     public function index()
     {
-        //
+        $contactMessages = ContactMessage::latest()->paginate(10);
+        return view('admin.contact-messages.index', compact('contactMessages'));
     }
 
     /**
@@ -34,9 +36,12 @@ class ContactMessageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(ContactMessage $contactMessage)
     {
-        //
+        if (!$contactMessage->is_read) {
+            $contactMessage->markAsRead();
+        }
+        return view('admin.contact-messages.show', compact('contactMessage'));
     }
 
     /**
@@ -58,8 +63,17 @@ class ContactMessageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(ContactMessage $contactMessage)
     {
-        //
+        $contactMessage->delete();
+
+        return redirect()->route('admin.contact-messages.index')->with('success', 'Contact message deleted successfully!');
+    }
+
+    public function markAsRead(ContactMessage $contactMessage)
+    {
+        $contactMessage->markAsRead();
+
+        return redirect()->back()->with('success', 'Message marked as read.');
     }
 }
